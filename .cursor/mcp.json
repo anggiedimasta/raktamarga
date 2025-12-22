@@ -1,0 +1,13 @@
+﻿{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "shadcn@latest",
+        "mcp"
+      ],
+      "cwd": "c:/Users/anggiedimasta/Documents/DEVELOPMENTS/PERSONAL/raktamarga/apps/web"
+    }
+  }
+}
