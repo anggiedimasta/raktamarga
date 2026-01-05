@@ -77,7 +77,7 @@ export function AddEventForm({ memberId, onSuccess, onCancel }: AddEventFormProp
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
           <Label htmlFor="event-type">Jenis Peristiwa *</Label>
-          <Select value={eventType} onValueChange={setEventType}>
+          <Select value={eventType} onValueChange={(val) => setEventType(val ?? '')}>
             <SelectTrigger id="event-type">
               <SelectValue placeholder="Pilih jenis..." />
             </SelectTrigger>
@@ -123,7 +123,7 @@ export function AddEventForm({ memberId, onSuccess, onCancel }: AddEventFormProp
 
       <div className="space-y-2">
         <Label htmlFor="privacy">Privasi</Label>
-        <Select value={privacyLevel} onValueChange={setPrivacyLevel}>
+        <Select value={privacyLevel} onValueChange={(val) => setPrivacyLevel(val ?? '')}>
           <SelectTrigger id="privacy">
             <SelectValue placeholder="Pilih privasi..." />
           </SelectTrigger>

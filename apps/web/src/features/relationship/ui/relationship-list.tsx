@@ -1,4 +1,4 @@
-import { IconTrash, IconCheck, IconAlertTriangle } from '@tabler/icons-react'
+import { IconTrash, IconCheck, IconAlertTriangle, IconUser } from '@tabler/icons-react'
 import { trpc } from '../../../shared/lib/trpc-react'
 import { Badge } from '../../../components/ui/badge'
 import { Button } from '../../../components/ui/button'

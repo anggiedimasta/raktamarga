@@ -11,7 +11,7 @@
   },
   "scripts": {
     "dev": "bun run src/index.ts",
-    "build": "bun build src/index.ts --outdir ./dist",
+    "build": "bun build src/index.ts --outdir ./dist --target bun",
     "start": "bun run dist/index.js",
     "test": "vitest",
     "test:ui": "vitest --ui",

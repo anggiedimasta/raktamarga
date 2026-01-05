@@ -1,65 +1,18 @@
 "use client"
 
-import * as React from "react"
-import { Collapsible as CollapsiblePrimitive, useCollapsible } from "@base-ui/react/collapsible"
 
-const Collapsible = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & {
-    open?: boolean
-    defaultOpen?: boolean
-    onOpenChange?: (open: boolean) => void
-  }
->(({ className, open, defaultOpen, onOpenChange, ...props }, ref) => {
-  const { getRootProps } = useCollapsible({ open, defaultOpen, onChange: onOpenChange })
+import { Collapsible as CollapsiblePrimitive } from "@base-ui/react/collapsible"
 
-  return (
-    <CollapsiblePrimitive.Root
-      {...getRootProps()}
-      ref={ref}
-      className={className}
-      {...props}
-    />
-  )
-})
-Collapsible.displayName = "Collapsible"
+function Collapsible({ ...props }: CollapsiblePrimitive.Root.Props) {
+  return <CollapsiblePrimitive.Root {...props} />
+}
 
-const CollapsibleTrigger = React.forwardRef<
-  HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
->(({ className, ...props }, ref) => {
-  const { getRootProps, getInputProps } = useCollapsible({})
+function CollapsibleTrigger({ ...props }: CollapsiblePrimitive.Trigger.Props) {
+  return <CollapsiblePrimitive.Trigger {...props} />
+}
 
-  return (
-    <CollapsiblePrimitive.Trigger
-      {...getRootProps()}
-      ref={ref}
-      className={className}
-      {...props}
-    >
-      <CollapsiblePrimitive.Input {...getInputProps()} />
-    </CollapsiblePrimitive.Trigger>
-  )
-})
-CollapsibleTrigger.displayName = "CollapsibleTrigger"
-
-const CollapsibleContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
-  const { getRootProps, hidden } = useCollapsible({})
-
-  if (hidden) return null
-
-  return (
-    <CollapsiblePrimitive.Content
-      {...getRootProps()}
-      ref={ref}
-      className={className}
-      {...props}
-    />
-  )
-})
-CollapsibleContent.displayName = "CollapsibleContent"
+function CollapsibleContent({ ...props }: CollapsiblePrimitive.Panel.Props) {
+  return <CollapsiblePrimitive.Panel {...props} />
+}
 
 export { Collapsible, CollapsibleTrigger, CollapsibleContent }

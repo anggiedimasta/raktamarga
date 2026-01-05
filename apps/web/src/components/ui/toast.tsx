@@ -7,18 +7,18 @@ import { IconX } from "@tabler/icons-react"
 
 import { cn } from "@/lib/utils"
 
-function ToastProvider({ children, ...props }: React.PropsWithChildren<{ duration?: number }>) {
-  return <div {...props}>{children}</div>
+function ToastProvider({ children, ...props }: ToastPrimitives.Provider.Props) {
+  return <ToastPrimitives.Provider {...props}>{children}</ToastPrimitives.Provider>
 }
 
 const ToastViewport = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  ToastPrimitives.Viewport.Props
 >(({ className, ...props }, ref) => (
-  <div
+  <ToastPrimitives.Viewport
     ref={ref}
     className={cn(
-      "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+      "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px] gap-2 outline-none",
       className
     )}
     {...props}
@@ -42,13 +42,11 @@ const toastVariants = cva(
   }
 )
 
+export interface ToastProps extends ToastPrimitives.Root.Props, VariantProps<typeof toastVariants> {}
+
 const Toast = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> &
-    VariantProps<typeof toastVariants> & {
-      open?: boolean
-      onOpenChange?: (open: boolean) => void
-    }
+  ToastProps
 >(({ className, variant, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
@@ -62,9 +60,9 @@ Toast.displayName = "Toast"
 
 const ToastAction = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
+  ToastPrimitives.Action.Props
 >(({ className, ...props }, ref) => (
-  <button
+  <ToastPrimitives.Action
     ref={ref}
     className={cn(
       "inline-flex h-8 shrink-0 items-center justify-center border bg-transparent px-3 text-sm font-medium transition-colors hover:bg-secondary focus:outline-none focus:ring-1 focus:ring-ring disabled:pointer-events-none disabled:opacity-50 group-[.destructive]:border-muted/40 group-[.destructive]:hover:border-destructive/30 group-[.destructive]:hover:bg-destructive group-[.destructive]:hover:text-destructive-foreground group-[.destructive]:focus:ring-destructive",
@@ -77,7 +75,7 @@ ToastAction.displayName = "ToastAction"
 
 const ToastClose = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement>
+  ToastPrimitives.Close.Props
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
@@ -94,7 +92,7 @@ ToastClose.displayName = "ToastClose"
 
 const ToastTitle = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  ToastPrimitives.Title.Props
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Title
     ref={ref}
@@ -106,7 +104,7 @@ ToastTitle.displayName = "ToastTitle"
 
 const ToastDescription = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  ToastPrimitives.Description.Props
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Description
     ref={ref}
@@ -116,12 +114,10 @@ const ToastDescription = React.forwardRef<
 ))
 ToastDescription.displayName = "ToastDescription"
 
-type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
 
 type ToastActionElement = React.ReactElement<typeof ToastAction>
 
 export {
-  type ToastProps,
   type ToastActionElement,
   ToastProvider,
   ToastViewport,

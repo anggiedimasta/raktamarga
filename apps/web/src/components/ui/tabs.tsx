@@ -7,7 +7,7 @@ const Tabs = TabsPrimitive.Root
 
 const TabsList = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+  TabsPrimitive.List.Props
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.List
     ref={ref}
@@ -22,28 +22,28 @@ TabsList.displayName = "TabsList"
 
 const TabsTrigger = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Tab> & { asChild?: boolean }
+  TabsPrimitive.Tab.Props & { asChild?: boolean }
 >(({ className, asChild, children, ...props }, ref) => {
+  const styles = cn(
+    "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-active:bg-background data-active:text-foreground data-active:shadow-sm",
+    className
+  )
+
   if (asChild && React.isValidElement(children)) {
     return (
       <TabsPrimitive.Tab
-        className={cn(
-          "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-active:bg-background data-active:text-foreground data-active:shadow-sm",
-          className
-        )}
+        className={styles}
         render={children}
         {...props}
         ref={ref}
       />
     )
   }
+
   return (
     <TabsPrimitive.Tab
       ref={ref}
-      className={cn(
-        "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-active:bg-background data-active:text-foreground data-active:shadow-sm",
-        className
-      )}
+      className={styles}
       {...props}
     >
       {children}
@@ -54,7 +54,7 @@ TabsTrigger.displayName = "TabsTrigger"
 
 const TabsContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Panel>
+  TabsPrimitive.Panel.Props
 >(({ className, ...props }, ref) => (
   <TabsPrimitive.Panel
       ref={ref}

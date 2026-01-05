@@ -104,7 +104,7 @@ export function AddRelationshipForm({ memberId, familyId, onSuccess, onCancel }:
 
       <div className="space-y-2">
         <Label htmlFor="rel-type">Jenis Hubungan</Label>
-        <Select value={relationshipType} onValueChange={setRelationshipType}>
+        <Select value={relationshipType} onValueChange={(val) => setRelationshipType(val ?? '')}>
           <SelectTrigger id="rel-type">
             <SelectValue placeholder="Pilih jenis hubungan..." />
           </SelectTrigger>

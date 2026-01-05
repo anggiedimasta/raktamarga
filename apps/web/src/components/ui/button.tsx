@@ -1,8 +1,8 @@
+import * as React from "react"
 import { Button as ButtonPrimitive } from "@base-ui/react/button"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
-import { Slot } from "./slot"
 
 const buttonVariants = cva(
   "focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive dark:aria-invalid:border-destructive/50 rounded-none border border-transparent bg-clip-padding text-xs font-medium focus-visible:ring-1 aria-invalid:ring-1 [&_svg:not([class*='size-'])]:size-4 inline-flex items-center justify-center whitespace-nowrap transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none shrink-0 [&_svg]:shrink-0 outline-none group/button select-none",
@@ -34,26 +34,40 @@ const buttonVariants = cva(
   }
 )
 
-function Button({
-  className,
-  variant = "default",
-  size = "default",
-  asChild = false,
-  ...props
-}: ButtonPrimitive.Props & VariantProps<typeof buttonVariants> & { asChild?: boolean }) {
-  if (asChild) {
+export type ButtonProps = ButtonPrimitive.Props &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+    children?: React.ReactNode
+  } & React.RefAttributes<HTMLButtonElement>
+
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, variant = "default", size = "default", asChild = false, children, ...props }, ref) => {
+    const styles = cn(buttonVariants({ variant, size, className }))
+
+    if (asChild && React.isValidElement(children)) {
+      return (
+        <ButtonPrimitive
+          data-slot="button"
+          className={styles}
+          render={children}
+          ref={ref}
+          {...props}
+        />
+      )
+    }
+
     return (
-      <Slot className={cn(buttonVariants({ variant, size, className }))} {...props} />
+      <ButtonPrimitive
+        data-slot="button"
+        className={styles}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </ButtonPrimitive>
     )
   }
-
-  return (
-    <ButtonPrimitive
-      data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
-      {...props}
-    />
-  )
-}
+)
+Button.displayName = "Button"
 
 export { Button, buttonVariants }

@@ -1,5 +1,5 @@
 import * as React from "react"
-import { Toggle as TogglePrimitive, useToggle } from "@base-ui/react/toggle"
+import { Toggle as TogglePrimitive } from "@base-ui/react/toggle"
 import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -28,32 +28,18 @@ const toggleVariants = cva(
 
 const Toggle = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement> &
-    VariantProps<typeof toggleVariants> & {
-      pressed?: boolean
-      defaultPressed?: boolean
-      onPressedChange?: (pressed: boolean) => void
-    }
->(({ className, variant, size, pressed, defaultPressed, onPressedChange, ...props }, ref) => {
-  const { getRootProps, getInputProps, pressed: isPressed } = useToggle({
-    pressed,
-    defaultPressed,
-    onChange: onPressedChange,
-  })
-
+  TogglePrimitive.Props & VariantProps<typeof toggleVariants>
+>(({ className, variant, size, ...props }, ref) => {
   return (
-    <TogglePrimitive.Root
-      {...getRootProps()}
+    <TogglePrimitive
       ref={ref}
-      className={cn(
+      className={({ pressed }) => cn(
         toggleVariants({ variant, size }),
-        isPressed && "bg-accent text-accent-foreground",
+        pressed && "bg-accent text-accent-foreground",
         className
       )}
       {...props}
-    >
-      <TogglePrimitive.Input {...getInputProps()} />
-    </TogglePrimitive.Root>
+    />
   )
 })
 

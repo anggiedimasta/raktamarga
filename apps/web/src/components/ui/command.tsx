@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { type Dialog as DialogType } from "@base-ui/react/dialog"
-type DialogProps = DialogType.Root.Props
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
+type DialogProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>
 import { Command as CommandPrimitive } from "cmdk"
 import { Search } from "lucide-react"
 
@@ -24,7 +24,7 @@ const Command = React.forwardRef<
 ))
 Command.displayName = CommandPrimitive.displayName
 
-const CommandDialog = ({ children, ...props }: DialogProps) => {
+const CommandDialog = ({ children, ...props }: DialogProps & { children?: React.ReactNode }) => {
   return (
     <Dialog {...props}>
       <DialogContent className="overflow-hidden p-0">

@@ -95,9 +95,9 @@ MenubarSubTrigger.displayName = "MenubarSubTrigger"
 function MenubarSubContent({
   className,
   ...props
-}: MenubarPrimitive.SubmenuPopup.Props) {
+}: MenubarPrimitive.Popup.Props) {
   return (
-    <MenubarPrimitive.SubmenuPopup
+    <MenubarPrimitive.Popup
       data-slot="menubar-sub-content"
       className={cn(
         "z-50 min-w-[8rem] overflow-hidden border bg-popover p-1 text-popover-foreground shadow-lg data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95",

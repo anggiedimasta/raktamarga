@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Progress as ProgressPrimitive, useProgress } from "@base-ui/react/progress"
+import { Progress as ProgressPrimitive } from "@base-ui/react/progress"
 
 import { cn } from "@/lib/utils"
 
@@ -12,11 +12,10 @@ const Progress = React.forwardRef<
     max?: number
   }
 >(({ className, value = 0, max = 100, ...props }, ref) => {
-  const { getRootProps, getProgressProps } = useProgress({ value, max })
-
   return (
     <ProgressPrimitive.Root
-      {...getRootProps()}
+      value={value}
+      max={max}
       ref={ref}
       className={cn(
         "relative h-2 w-full overflow-hidden bg-primary/20",
@@ -25,7 +24,6 @@ const Progress = React.forwardRef<
       {...props}
     >
       <ProgressPrimitive.Indicator
-        {...getProgressProps()}
         className="h-full w-full flex-1 bg-primary transition-all"
         style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
       />

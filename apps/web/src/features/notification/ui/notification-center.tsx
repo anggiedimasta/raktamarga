@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { IconBell, IconLoader2, IconCheck, IconChecks } from '@tabler/icons-react'
+import { IconBell, IconLoader2, IconChecks } from '@tabler/icons-react'
 import { trpc } from '../../../shared/lib/trpc-react'
 import { Button } from '../../../components/ui/button'
 import { Badge } from '../../../components/ui/badge'

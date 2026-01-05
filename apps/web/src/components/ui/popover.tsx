@@ -8,7 +8,7 @@ const Popover = PopoverPrimitive.Root
 
 const PopoverTrigger = React.forwardRef<
   HTMLButtonElement,
-  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger> & {
+  PopoverPrimitive.Trigger.Props & {
     asChild?: boolean
   }
 >(({ asChild, children, ...props }, ref) => {
@@ -31,14 +31,15 @@ PopoverTrigger.displayName = "PopoverTrigger"
 
 const PopoverContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Popup> & {
+  PopoverPrimitive.Popup.Props & {
     align?: "start" | "center" | "end"
     side?: "top" | "bottom" | "left" | "right"
     sideOffset?: number
+    alignOffset?: number
   }
->(({ className, align = "center", side = "bottom", sideOffset = 4, ...props }, ref) => (
+>(({ className, alignOffset, align = "center", side = "bottom", sideOffset = 4, ...props }, ref) => (
   <PopoverPrimitive.Portal>
-    <PopoverPrimitive.Positioner side={side} align={align} sideOffset={sideOffset}>
+    <PopoverPrimitive.Positioner side={side} align={align} sideOffset={sideOffset} alignOffset={alignOffset}>
       <PopoverPrimitive.Popup
         ref={ref}
         className={cn(

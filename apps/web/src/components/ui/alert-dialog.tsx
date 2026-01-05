@@ -37,7 +37,7 @@ function AlertDialogPortal({ ...props }: AlertDialogPrimitive.Portal.Props) {
 
 const AlertDialogOverlay = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  AlertDialogPrimitive.Backdrop.Props
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Backdrop
     ref={ref}
@@ -52,7 +52,7 @@ AlertDialogOverlay.displayName = "AlertDialogOverlay"
 
 const AlertDialogContent = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  AlertDialogPrimitive.Popup.Props
 >(({ className, ...props }, ref) => (
   <AlertDialogPortal>
     <AlertDialogOverlay />
@@ -98,7 +98,7 @@ AlertDialogFooter.displayName = "AlertDialogFooter"
 
 const AlertDialogTitle = React.forwardRef<
   HTMLHeadingElement,
-  React.HTMLAttributes<HTMLHeadingElement>
+  AlertDialogPrimitive.Title.Props
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Title
     ref={ref}
@@ -110,7 +110,7 @@ AlertDialogTitle.displayName = "AlertDialogTitle"
 
 const AlertDialogDescription = React.forwardRef<
   HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  AlertDialogPrimitive.Description.Props
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Description
     ref={ref}
@@ -122,13 +122,14 @@ AlertDialogDescription.displayName = "AlertDialogDescription"
 
 const AlertDialogAction = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean }
->(({ className, asChild, ...props }, ref) => {
-  if (asChild && React.isValidElement(props.children)) {
+  AlertDialogPrimitive.Close.Props & { asChild?: boolean }
+>(({ className, asChild, children, ...props }, ref) => {
+  const styles = cn(buttonVariants(), className)
+  if (asChild && React.isValidElement(children)) {
     return (
       <AlertDialogPrimitive.Close
-        className={cn(buttonVariants(), className)}
-        render={props.children}
+        className={styles}
+        render={children}
         {...props}
         ref={ref}
       />
@@ -137,26 +138,29 @@ const AlertDialogAction = React.forwardRef<
   return (
     <AlertDialogPrimitive.Close
       ref={ref}
-      className={cn(buttonVariants(), className)}
+      className={styles}
       {...props}
-    />
+    >
+      {children}
+    </AlertDialogPrimitive.Close>
   )
 })
 AlertDialogAction.displayName = "AlertDialogAction"
 
 const AlertDialogCancel = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean }
->(({ className, asChild, ...props }, ref) => {
-  if (asChild && React.isValidElement(props.children)) {
+  AlertDialogPrimitive.Close.Props & { asChild?: boolean }
+>(({ className, asChild, children, ...props }, ref) => {
+  const styles = cn(
+    buttonVariants({ variant: "outline" }),
+    "mt-2 sm:mt-0",
+    className
+  )
+  if (asChild && React.isValidElement(children)) {
     return (
       <AlertDialogPrimitive.Close
-        className={cn(
-          buttonVariants({ variant: "outline" }),
-          "mt-2 sm:mt-0",
-          className
-        )}
-        render={props.children}
+        className={styles}
+        render={children}
         {...props}
         ref={ref}
       />
@@ -165,13 +169,11 @@ const AlertDialogCancel = React.forwardRef<
   return (
     <AlertDialogPrimitive.Close
       ref={ref}
-      className={cn(
-        buttonVariants({ variant: "outline" }),
-        "mt-2 sm:mt-0",
-        className
-      )}
+      className={styles}
       {...props}
-    />
+    >
+      {children}
+    </AlertDialogPrimitive.Close>
   )
 })
 AlertDialogCancel.displayName = "AlertDialogCancel"

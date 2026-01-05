@@ -84,7 +84,7 @@ export function SubmitMemberForm({ familyId, onSuccess, onCancel }: SubmitMember
           <Label htmlFor="gender">Jenis Kelamin</Label>
           <Select
             value={gender}
-            onValueChange={(value: 'male' | 'female' | 'other') => setGender(value)}
+            onValueChange={(value) => setGender(value as any ?? '')}
           >
             <SelectTrigger>
               <SelectValue placeholder="Pilih..." />

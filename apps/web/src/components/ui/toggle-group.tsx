@@ -1,5 +1,6 @@
 import * as React from "react"
-import { ToggleGroup as ToggleGroupPrimitive, useToggleGroup } from "@base-ui/react/toggle-group"
+import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group"
+import { Toggle } from "@base-ui/react/toggle"
 import { type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
@@ -14,19 +15,10 @@ const ToggleGroupContext = React.createContext<
 
 const ToggleGroup = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> &
-    VariantProps<typeof toggleVariants> & {
-      type?: "single" | "multiple"
-      value?: string | string[]
-      defaultValue?: string | string[]
-      onValueChange?: (value: string | string[]) => void
-    }
->(({ className, variant, size, children, type = "single", value, defaultValue, onValueChange, ...props }, ref) => {
-  const { getRootProps } = useToggleGroup({ type, value, defaultValue, onChange: onValueChange })
-
+  ToggleGroupPrimitive.Props & VariantProps<typeof toggleVariants>
+>(({ className, variant, size, children, ...props }, ref) => {
   return (
-    <ToggleGroupPrimitive.Root
-      {...getRootProps()}
+    <ToggleGroupPrimitive
       ref={ref}
       className={cn("flex items-center justify-center gap-1", className)}
       {...props}
@@ -34,7 +26,7 @@ const ToggleGroup = React.forwardRef<
       <ToggleGroupContext.Provider value={{ variant, size }}>
         {children}
       </ToggleGroupContext.Provider>
-    </ToggleGroupPrimitive.Root>
+    </ToggleGroupPrimitive>
   )
 })
 
@@ -42,31 +34,25 @@ ToggleGroup.displayName = "ToggleGroup"
 
 const ToggleGroupItem = React.forwardRef<
   HTMLButtonElement,
-  React.ButtonHTMLAttributes<HTMLButtonElement> &
-    VariantProps<typeof toggleVariants> & {
-      value: string
-    }
->(({ className, children, variant, size, value, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<typeof Toggle> & VariantProps<typeof toggleVariants>
+>(({ className, children, variant, size, ...props }, ref) => {
   const context = React.useContext(ToggleGroupContext)
-  const { getRootProps, getInputProps, selected } = useToggleGroup({ value })
 
   return (
-    <ToggleGroupPrimitive.Item
-      {...getRootProps()}
+    <Toggle
       ref={ref}
-      className={cn(
+      className={(state: { pressed: boolean }) => cn(
         toggleVariants({
           variant: context.variant || variant,
           size: context.size || size,
         }),
-        selected && "bg-accent text-accent-foreground",
+        state.pressed && "bg-accent text-accent-foreground",
         className
       )}
       {...props}
     >
-      <ToggleGroupPrimitive.Input {...getInputProps()} />
       {children}
-    </ToggleGroupPrimitive.Item>
+    </Toggle>
   )
 })
 

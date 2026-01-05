@@ -1,5 +1,4 @@
 import * as React from "react"
-import { Slot } from "./slot"
 import { IconChevronRight, IconDots } from "@tabler/icons-react"
 
 import { cn } from "@/lib/utils"
@@ -44,15 +43,23 @@ const BreadcrumbLink = React.forwardRef<
   React.ComponentPropsWithoutRef<"a"> & {
     asChild?: boolean
   }
->(({ asChild, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : "a"
+>(({ asChild, className, children, ...props }, ref) => {
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ...props,
+      className: cn("transition-colors hover:text-foreground", className, (children.props as any)?.className),
+      ref,
+    } as any)
+  }
 
   return (
-    <Comp
+    <a
       ref={ref}
       className={cn("transition-colors hover:text-foreground", className)}
       {...props}
-    />
+    >
+      {children}
+    </a>
   )
 })
 BreadcrumbLink.displayName = "BreadcrumbLink"
@@ -83,7 +90,7 @@ const BreadcrumbSeparator = ({
     className={cn("[&>svg]:w-3.5 [&>svg]:h-3.5", className)}
     {...props}
   >
-    {children ?? <ChevronRight />}
+    {children ?? <IconChevronRight />}
   </li>
 )
 BreadcrumbSeparator.displayName = "BreadcrumbSeparator"

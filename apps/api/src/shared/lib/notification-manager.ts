@@ -1,9 +1,7 @@
-import { EventEmitter } from 'node:events'
 import { auth } from '@raktamarga/auth'
 
 export class NotificationManager {
   private static instance: NotificationManager
-  private emitter = new EventEmitter()
   private connections = new Map<string, Set<any>>()
 
   private constructor() {}
