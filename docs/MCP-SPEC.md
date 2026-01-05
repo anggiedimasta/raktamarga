@@ -8,12 +8,12 @@ MCP server for semantic code search via Pinecone vectors.
 
 | Aspect | Decision |
 |--------|----------|
-| **Repo** | `raktamarga-mcp` (separate repository) |
+| **Location** | `packages/mcp` (monorepo) |
 | **Runtime** | Bun + TypeScript |
 | **Deployment** | Railway (free tier) |
 | **Transport** | SSE (for deployed), stdio (for local) |
 | **Vector DB** | Pinecone `raktamarga` index |
-
+| **Embedding** | Google Gemini `text-embedding-004` |
 ---
 
 ## MCP Tools
@@ -221,7 +221,7 @@ Search by code element type.
 ## Project Structure
 
 ```
-raktamarga-mcp/
+packages/mcp/
 ├── src/
 │   ├── index.ts              # MCP server entry
 │   ├── server.ts             # Server setup (stdio/SSE)
@@ -237,12 +237,11 @@ raktamarga-mcp/
 │   │   └── search-by-type.ts
 │   ├── services/
 │   │   ├── pinecone.ts       # Pinecone client
-│   │   ├── embedder.ts       # OpenAI embeddings
+│   │   ├── embedder.ts       # Gemini embeddings
 │   │   └── github.ts         # GitHub API for file content
 │   └── config.ts
 ├── package.json
 ├── tsconfig.json
-├── railway.toml
 └── README.md
 ```
 
@@ -252,7 +251,7 @@ raktamarga-mcp/
 
 ```bash
 # Required
-OPENAI_API_KEY=sk-...
+GEMINI_API_KEY=AIzaSy...
 PINECONE_API_KEY=pcsk_...
 GITHUB_TOKEN=ghp_...          # For file content retrieval
 
@@ -260,6 +259,7 @@ GITHUB_TOKEN=ghp_...          # For file content retrieval
 PINECONE_INDEX=raktamarga
 GITHUB_REPO=anggiedimasta/raktamarga
 GITHUB_BRANCH=main
+EMBEDDING_MODEL=text-embedding-004
 ```
 
 ---
@@ -302,9 +302,9 @@ healthcheckPath = "/health"
   "mcpServers": {
     "raktamarga": {
       "command": "bun",
-      "args": ["run", "/path/to/raktamarga-mcp/src/index.ts"],
+      "args": ["run", "/path/to/raktamarga/packages/mcp/src/index.ts"],
       "env": {
-        "OPENAI_API_KEY": "...",
+        "GEMINI_API_KEY": "...",
         "PINECONE_API_KEY": "...",
         "GITHUB_TOKEN": "..."
       }
@@ -322,11 +322,11 @@ healthcheckPath = "/health"
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
     "@pinecone-database/pinecone": "^2.0.0",
-    "openai": "^4.0.0",
+    "@google/generative-ai": "^0.21.0",
     "octokit": "^3.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@types/node": "^22.0.0",
     "typescript": "^5.0.0"
   }
 }
@@ -337,11 +337,11 @@ healthcheckPath = "/health"
 ## Implementation Phases
 
 ### Phase 1: Core Server
-- [ ] MCP server setup (stdio transport)
-- [ ] Pinecone client integration
-- [ ] `search_code` tool
-- [ ] `search_docs` tool
-- [ ] `get_file` tool (via GitHub API)
+- [x] MCP server setup (stdio transport)
+- [x] Pinecone client integration
+- [x] `search_code` tool
+- [x] `search_docs` tool
+- [x] `get_file` tool (via GitHub API)
 
 ### Phase 2: Advanced Search
 - [ ] `find_similar` tool
