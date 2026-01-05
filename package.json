@@ -8,6 +8,8 @@
     "dev": "bun run --filter='./apps/*' dev",
     "dev:api": "bun --filter=@raktamarga/api dev",
     "dev:web": "bun --filter=@raktamarga/web dev",
+    "dev:mcp": "bun --filter=@raktamarga/mcp dev",
+    "start:mcp": "bun --filter=@raktamarga/mcp start",
     "build": "bun run --filter='./apps/*' build",
     "test": "bun run --filter='./apps/*' test && bun run --filter='./packages/*' test",
     "lint": "biome check .",
