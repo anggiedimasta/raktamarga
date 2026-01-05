@@ -17,7 +17,8 @@ Create a `.env` file in the repository root:
 ```bash
 GEMINI_API_KEY=your-gemini-api-key
 PINECONE_API_KEY=your-pinecone-api-key
-GITHUB_TOKEN=your-github-token  # Optional, for private repos
+GITHUB_TOKEN=your-github-token     # Optional, for private repos
+MCP_AUTH_TOKEN=your-secure-token   # Required for SSE server authentication
 ```
 
 ### Install Dependencies
@@ -26,15 +27,64 @@ GITHUB_TOKEN=your-github-token  # Optional, for private repos
 bun install
 ```
 
-### Run Locally
+## Running the Server
+
+### Stdio Transport (Local Development)
 
 ```bash
+# Default stdio mode
 bun run --filter=@raktamarga/mcp dev
 ```
 
-## Claude Desktop Configuration
+### SSE Transport (Remote Access)
 
-Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+```bash
+# Run as SSE server on port 3001
+MCP_TRANSPORT=sse bun run --filter=@raktamarga/mcp start
+```
+
+**Endpoints:**
+- `GET /sse` - Establish SSE stream (requires Bearer token)
+- `POST /messages?sessionId=xxx` - Send messages (requires Bearer token)
+- `GET /health` - Health check (no auth)
+
+## Authentication
+
+The SSE server uses Bearer token authentication. Set `MCP_AUTH_TOKEN` in your environment.
+
+```bash
+# Test authentication
+curl -H "Authorization: Bearer YOUR_TOKEN" https://your-server.up.railway.app/sse
+```
+
+> **Note:** If `MCP_AUTH_TOKEN` is not set, the server runs without authentication (development only).
+
+## Client Configuration
+
+### Gemini CLI / Antigravity
+
+Add to `~/.gemini/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "raktamarga": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://your-raktamarga-mcp.up.railway.app/sse",
+        "--header",
+        "Authorization: Bearer YOUR_MCP_AUTH_TOKEN"
+      ]
+    }
+  }
+}
+```
+
+### Claude Desktop (Local)
+
+Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
 ```json
 {
@@ -50,6 +100,37 @@ Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_
   }
 }
 ```
+
+### Claude Desktop (Remote via SSE)
+
+```json
+{
+  "mcpServers": {
+    "raktamarga": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://your-raktamarga-mcp.up.railway.app/sse",
+        "--header",
+        "Authorization: Bearer YOUR_MCP_AUTH_TOKEN"
+      ]
+    }
+  }
+}
+```
+
+## Deployment
+
+The MCP server is deployed to Railway. Ensure these environment variables are set:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GEMINI_API_KEY` | Yes | Google Gemini API key for embeddings |
+| `PINECONE_API_KEY` | Yes | Pinecone API key for vector search |
+| `GITHUB_TOKEN` | No | GitHub token for private repo access |
+| `MCP_AUTH_TOKEN` | Yes | Bearer token for SSE authentication |
+| `MCP_TRANSPORT` | Yes | Set to `sse` for Railway deployment |
 
 ## Tools
 
