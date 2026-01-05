@@ -9,7 +9,7 @@
     "dev:api": "bun --filter=@raktamarga/api dev",
     "dev:web": "bun --filter=@raktamarga/web dev",
     "dev:mcp": "bun --filter=@raktamarga/mcp dev",
-    "build": "bun run --filter='./apps/*' build",
+    "build": "bun run --filter='./apps/*' build && bun run --filter=@raktamarga/mcp build",
     "start": "bun --filter=\"$RAILWAY_SERVICE_NAME\" run start",
     "start:web": "bun --filter=@raktamarga/web run start",
     "start:api": "bun --filter=@raktamarga/api run start",
