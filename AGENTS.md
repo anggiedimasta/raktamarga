@@ -123,7 +123,7 @@ Triggered via `/command`:
 ```
 raktamarga/
 ├── apps/
-│   ├── web/              # TanStack Start frontend (React 19)
+│   ├── web/              # React 19 frontend (TanStack Start)
 │   │   └── src/
 │   │       ├── app/       # App layer (providers)
 │   │       ├── routes/    # Type-safe routing (TanStack Router)
@@ -135,6 +135,8 @@ raktamarga/
 │           ├── router.ts  # Main tRPC router
 │           └── trpc.ts    # tRPC setup
 ├── packages/
+│   ├── mcp/              # Model Context Protocol server
+│   ├── embeddings/       # Codebase embedding & indexing logic
 │   ├── ui/               # Shared React components
 │   ├── db/               # Database schema & migrations
 │   ├── auth/             # BetterAuth configuration

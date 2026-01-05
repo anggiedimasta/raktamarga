@@ -30,6 +30,14 @@ This project is configured to deploy on Railway.
    VITE_API_URL=https://your-api.railway.app
    ```
 
+   For MCP service:
+   ```
+   GEMINI_API_KEY=your_gemini_key
+   PINECONE_API_KEY=your_pinecone_key
+   PINECONE_INDEX=raktamarga
+   PORT=3001
+   ```
+
 3. **Database Setup:**
    - Create Neon PostgreSQL database
    - Run migrations:

@@ -62,6 +62,20 @@
 - [x] Setup guide
 - [x] Deployment guide
 - [x] Contributing guide
+- [x] MCP Specification
+- [x] Embeddings Specification
+
+### MCP & AI
+- [x] `@raktamarga/mcp` - Model Context Protocol server
+- [x] SSE Transport support for MCP
+- [x] Documentation semantic search tool
+- [x] Codebase semantic search tool
+- [x] File reader tool
+- [x] `@raktamarga/embeddings` - Vector ingestion pipeline
+- [x] Multi-format chunking (Code, Markdown, Text)
+- [x] Gemini Embeddings integration
+- [x] Pinecone Vector DB indexing
+- [x] Incremental indexing using Git diff
 
 ## 🚧 In Progress / TODO
 

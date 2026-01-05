@@ -1,6 +1,6 @@
 /**
  * Batch processing for embeddings
- * Handles batching and rate limiting for OpenAI API
+ * Handles batching and rate limiting for Gemini API
  */
 
 import type { Chunk } from '../types.js';

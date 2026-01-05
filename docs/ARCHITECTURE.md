@@ -7,11 +7,13 @@ This project uses a Bun workspace monorepo with the following structure:
 ```
 raktamarga/
 ├── apps/
-│   ├── web/          # TanStack Start frontend (React + Vite)
+│   ├── web/          # React 19 frontend (TanStack Start)
 │   └── api/          # Elysia backend (feature-based)
 ├── packages/
-│   ├── ui/           # Shared shadcn/ui components (React)
-│   ├── db/           # Database schema & migrations
+│   ├── mcp/          # Model Context Protocol server (SSE)
+│   ├── embeddings/   # AI Embeddings & Indexing logic
+│   ├── ui/           # Shared React components (shadcn/ui)
+│   ├── db/           # Database schema & migrations (Drizzle)
 │   ├── auth/         # BetterAuth configuration
 │   └── shared/       # Shared utilities & types
 └── docs/             # Documentation
@@ -52,3 +54,18 @@ The backend uses feature-based modules:
 
 - tRPC for end-to-end type safety
 - Elysia framework with `@elysiajs/trpc` plugin
+
+## AI & MCP (Model Context Protocol)
+
+The project includes a dedicated MCP server and an embeddings pipeline to enhance AI-assisted development:
+
+- **@raktamarga/mcp**:
+  - Provides custom tools for AI agents to search and read the codebase.
+  - Supports standard and SSE (Server-Sent Events) transports.
+  - Deployed as a separate service on Railway.
+- **@raktamarga/embeddings**:
+  - Scans the codebase for files (respecting .gitignore).
+  - Chunks content based on file type (AST-based for code, semantic for Markdown).
+  - Uses Gemini `text-embedding-004` model.
+  - Indexes vectors into Pinecone for semantic retrieval.
+  - Supports incremental updates via Git diff to keep the index fresh.

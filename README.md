@@ -5,10 +5,11 @@ A modern genealogy and family tree application built with a monorepo architectur
 ## Tech Stack
 
 - **Runtime:** Bun
-- **Frontend:** SvelteKit 2.x + shadcn-svelte + Feature-Sliced Design
-- **Backend:** Elysia + tRPC
-- **Database:** PostgreSQL (Neon)
+- **Frontend:** React 19 + TanStack Start + shadcn/ui
+- **Backend:** Elysia + tRPC + Effect
+- **Database:** PostgreSQL (Neon) + Drizzle ORM
 - **Auth:** BetterAuth
+- **Search & AI:** Pinecone (Vector DB) + Gemini (Embeddings)
 - **Deployment:** Railway
 - **Linting/Formatting:** Biome
 - **Testing:** Vitest + Testing Library + Playwright
@@ -34,6 +35,11 @@ bun run dev
 # Run specific app
 bun --filter=@raktamarga/web dev
 bun --filter=@raktamarga/api dev
+bun --filter=@raktamarga/mcp dev
+
+# Embeddings Indexing
+bun run index:embeddings       # Incremental index (git diff)
+bun run index:embeddings:full  # Full codebase index
 ```
 
 ### Testing
@@ -61,10 +67,12 @@ bun run format
 ```
 raktamarga/
 ├── apps/
-│   ├── web/          # SvelteKit frontend (FSD architecture)
+│   ├── web/          # React 19 frontend (TanStack Start)
 │   └── api/          # Elysia backend (feature-based)
 ├── packages/
-│   ├── ui/           # Shared shadcn-svelte components
+│   ├── mcp/          # Model Context Protocol server
+│   ├── embeddings/   # Codebase embedding & indexing logic
+│   ├── ui/           # Shared React components
 │   ├── db/           # Database schema & migrations
 │   ├── auth/         # BetterAuth configuration
 │   └── shared/       # Shared utilities & types
