@@ -12,7 +12,9 @@
     "test": "bun run --filter='./apps/*' test && bun run --filter='./packages/*' test",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "typecheck": "bun run --filter='./apps/*' typecheck && bun run --filter='./packages/*' typecheck"
+    "typecheck": "bun run --filter='./apps/*' typecheck && bun run --filter='./packages/*' typecheck",
+    "index:embeddings": "bun --filter=@raktamarga/embeddings index",
+    "index:embeddings:full": "bun --filter=@raktamarga/embeddings index:full"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",

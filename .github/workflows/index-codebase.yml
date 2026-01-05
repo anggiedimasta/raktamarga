@@ -1,0 +1,55 @@
+name: Index Codebase
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'packages/embeddings/**'
+      - '.github/workflows/index-codebase.yml'
+  workflow_dispatch:
+    inputs:
+      full_index:
+        description: 'Perform full re-index'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # For diff detection
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+
+      - name: Install dependencies
+        run: bun install --filter=@raktamarga/embeddings
+
+      - name: Run indexer
+        run: |
+          if [ "${{ github.event.inputs.full_index }}" == "true" ]; then
+            bun run --filter=@raktamarga/embeddings index:full
+          else
+            bun run --filter=@raktamarga/embeddings index
+          fi
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+          PINECONE_INDEX: ${{ secrets.PINECONE_INDEX || 'raktamarga' }}
+          PINECONE_ENVIRONMENT: ${{ secrets.PINECONE_ENVIRONMENT || 'us-east-1' }}
+          EMBEDDING_MODEL: text-embedding-004
+
+      - name: Report status
+        if: always()
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "✅ Indexing completed successfully"
+          else
+            echo "❌ Indexing failed"
+            exit 1
+          fi
